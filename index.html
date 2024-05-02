@@ -1,14 +1,698 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Typing...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #09090B;
+    }
+
+    * {
+      scroll-behavior: smooth;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    #messages>li:nth-child(odd) {}
+
+    #messages>li:nth-child(even) {}
+
+    button.btn-send {
+      font-family: inherit;
+      font-size: 20px;
+      background: royalblue;
+      color: white;
+      padding: 0.7em 1em;
+      padding-left: 0.9em;
+      display: flex;
+      align-items: center;
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    button.btn-send span {
+      display: block;
+      margin-left: 0.3em;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button.btn-send svg {
+      display: block;
+      transform-origin: center center;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    button.btn-send:hover .svg-wrapper {
+      animation: fly-1 0.6s ease-in-out infinite alternate;
+    }
+
+    button.btn-send:hover svg {
+      transform: translateX(1.2em) rotate(45deg) scale(1.1);
+    }
+
+    button.btn-send:hover span {
+      transform: translateX(5em);
+    }
+
+    button.btn-send:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes fly-1 {
+      from {
+        transform: translateY(0.1em);
+      }
+
+      to {
+        transform: translateY(-0.1em);
+      }
+    }
+
+    *::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    *::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background-color: gray;
+    }
+
+    .btn-clear {
+      position: relative;
+      margin: 0;
+      padding: 0.8em 1em;
+      outline: none;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: none;
+      text-transform: uppercase;
+      background-color: #4169e1;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 300;
+      font-size: 18px;
+      font-family: inherit;
+      z-index: 0;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+    }
+
+    .btn-clear:hover {
+      animation: sh0 0.5s ease-in-out both;
+    }
+
+    @keyframes sh0 {
+      0% {
+        transform: rotate(0deg) translate3d(0, 0, 0);
+      }
+
+      25% {
+        transform: rotate(7deg) translate3d(0, 0, 0);
+      }
+
+      50% {
+        transform: rotate(-7deg) translate3d(0, 0, 0);
+      }
+
+      75% {
+        transform: rotate(1deg) translate3d(0, 0, 0);
+      }
+
+      100% {
+        transform: rotate(0deg) translate3d(0, 0, 0);
+      }
+    }
+
+    .btn-clear:hover span {
+      animation: storm 0.7s ease-in-out both;
+      animation-delay: 0.06s;
+    }
+
+    .btn-clear::before,
+    .btn-clear::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0;
+      transition: transform 0.15s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.15s cubic-bezier(0.02, 0.01, 0.47, 1);
+      z-index: -1;
+      transform: translate(100%, -25%) translate3d(0, 0, 0);
+    }
+
+    .btn-clear:hover::before,
+    .btn-clear:hover::after {
+      opacity: 0.15;
+      transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+    }
+
+    .btn-clear:hover::before {
+      transform: translate3d(50%, 0, 0) scale(0.9);
+    }
+
+    .btn-clear:hover::after {
+      transform: translate(50%, 0) scale(1.1);
+    }
+
+    .bell-icon:hover .svg-hover {
+      animation: buzz 0.2s infinite alternate ease-in-out;
+      color: #4169e1;
+    }
+
+    /* scroll down icon */
+
+
+    .scroll-down-dude:before,
+    .scroll-down-dude:after {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 12px;
+      transform: rotate(45deg);
+      border-bottom: 4px solid green;
+      border-right: 4px solid green;
+    }
+
+    .scroll-down-dude:before {
+      animation: down-arrow-before 2.6s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    }
+
+    .scroll-down-dude:after {
+      animation: down-arrow-after 2.6s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    }
+
+    @keyframes down-arrow-before {
+      50% {
+        transform: rotate(45deg) translate(70%, 70%);
+      }
+
+      100% {
+        transform: rotate(45deg) translate(70%, 70%);
+      }
+    }
+
+    @keyframes down-arrow-after {
+      50% {
+        transform: rotate(45deg) translate(110%, 110%);
+        opacity: 0;
+      }
+
+      51% {
+        transform: rotate(45deg) translate(-130%, -130%);
+      }
+
+      100% {
+        transform: rotate(45deg) translate(-70%, -70%);
+        opacity: 1;
+      }
+    }
+
+    @keyframes buzz {
+      0% {
+        transform: rotate(30deg);
+      }
+
+      100% {
+        transform: rotate(-30deg);
+      }
+    }
+
+    .card-main {
+      position: relative;
+      color: #fff;
+      background: transparent;
+      overflow: hidden;
+      border-top: 1px solid rgba(255, 49, 49, 0.5);
+      border-right: 1px solid rgba(0, 255, 255, 0.5);
+      border-bottom: 1px solid rgba(57, 255, 20, 0.5);
+      border-left: 1px solid rgba(255, 255, 113, 0.5);
+      font-family: sans-serif;
+    }
+
+    .span-cst.top {
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 5px;
+      background: linear-gradient(90deg,
+          rgba(255, 49, 49, 0.2) 50%,
+          rgba(255, 49, 49, 0.5),
+          rgba(255, 49, 49, 0.65));
+    }
+
+    .span-cst.bottom {
+      right: 0;
+      bottom: 0;
+      height: 5px;
+      background: linear-gradient(90deg,
+          rgba(55, 255, 20, 0.65),
+          rgba(57, 255, 20, 0.5),
+          rgba(57, 255, 20, 0.2) 50%);
+    }
+
+    .span-cst.right {
+      top: 0;
+      right: 0;
+      width: 5px;
+      height: 0;
+      background: linear-gradient(180deg,
+          rgba(0, 255, 255, 0.2) 30%,
+          rgba(0, 255, 255, 0.5),
+          rgba(0, 255, 255, 0.65));
+    }
+
+    .span-cst.left {
+      left: 0;
+      bottom: 0;
+      width: 5px;
+      height: 0;
+      background: linear-gradient(180deg,
+          rgba(255, 255, 113, 0.65),
+          rgba(255, 255, 113, 0.5),
+          rgba(255, 255, 113, 0.2) 70%);
+    }
+
+    .span-cst {
+      position: absolute;
+      border-radius: 100vmax;
+      z-index: 99;
+    }
+
+    .span-cst.top {
+      animation: animateTop 16s ease-in-out infinite;
+    }
+
+    .span-cst.bottom {
+      animation: animateBottom 16s ease-in-out infinite;
+    }
+
+    .span-cst.right {
+      animation: animateRight 16s ease-in-out infinite;
+    }
+
+    .span-cst.left {
+      animation: animateLeft 16s ease-in-out infinite;
+    }
+
+    @keyframes animateTop {
+      25% {
+        width: 100%;
+        opacity: 1;
+      }
+
+      30%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes animateBottom {
+
+      0%,
+      50% {
+        opacity: 0;
+        width: 0;
+      }
+
+      75% {
+        opacity: 1;
+        width: 100%;
+      }
+
+      76%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes animateRight {
+
+      0%,
+      25% {
+        opacity: 0;
+        height: 0;
+      }
+
+      50% {
+        opacity: 1;
+        height: 100%;
+      }
+
+      55%,
+      100% {
+        height: 100%;
+        opacity: 0;
+      }
+    }
+
+    @keyframes animateLeft {
+
+      0%,
+      75% {
+        opacity: 0;
+        bottom: 0;
+        height: 0;
+      }
+
+      100% {
+        opacity: 1;
+        height: 100%;
+      }
+    }
+  </style>
 </head>
 
-<body>
-    sasas
+<body class="mx-3 dark">
+  <div class="protected-div">
+    <div class="mt-10 mx-auto">
+      <div
+        class="mx-auto rounded-lg border border-[#171730] bg-[#03060D] text-card-foreground shadow-sm w-full  sm:w-[450px] relative card-main">
+        <form id="form" action="" class="">
+          <div class="flex p-2 border-b border-[#171730] justify-between items-center">
+            <h3 class="text-[#A1A1AA]">Hello there! <span class="user-typing text-white/70 p-2"></span>
+            </h3>
+            <div class="flex gap-2">
+              <div class="btn-clear !py-0.5 !text-[12px] min-w-[80px] !bg-[#212124]"
+                data-modal-target="clear-message-modal" data-modal-toggle="clear-message-modal">
+                <span class="">Clear</span>
+              </div>
+              <div class="btn-clear !py-0.5 !text-[12px] min-w-[80px]" data-modal-target="contact-modal"
+                data-modal-toggle="contact-modal">
+                <span class="">Contact</span>
+              </div>
+              <div
+                class="bell-icon flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-2 border-[#171730] hover:bg-primary-50 transition-all text-gray-300 hover:border-[#4169e1]">
+                <svg class="svg-hover h-5 w-5 bell transition-all text-[#667085]" viewBox="0 0 22 22" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M8.35442 20C9.05956 20.6224 9.9858 21 11.0002 21C12.0147 21 12.9409 20.6224 13.6461 20M1.29414 4.81989C1.27979 3.36854 2.06227 2.01325 3.32635 1.3M20.7024 4.8199C20.7167 3.36855 19.9342 2.01325 18.6702 1.3M17.0002 7C17.0002 5.4087 16.3681 3.88258 15.2429 2.75736C14.1177 1.63214 12.5915 1 11.0002 1C9.40895 1 7.88283 1.63214 6.75761 2.75736C5.63239 3.88258 5.00025 5.4087 5.00025 7C5.00025 10.0902 4.22072 12.206 3.34991 13.6054C2.61538 14.7859 2.24811 15.3761 2.26157 15.5408C2.27649 15.7231 2.31511 15.7926 2.46203 15.9016C2.59471 16 3.19284 16 4.3891 16H17.6114C18.8077 16 19.4058 16 19.5385 15.9016C19.6854 15.7926 19.724 15.7231 19.7389 15.5408C19.7524 15.3761 19.3851 14.7859 18.6506 13.6054C17.7798 12.206 17.0002 10.0902 17.0002 7Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+            </div>
+
+          </div>
+          <div class="absolute p-0 bottom-0 left-0 right-0 flex bg-[#09090B] rounded-b-xl z-10">
+            <input id="input" autocomplete="off"
+              class=" flex h-12 w-full rounded-b-lg border-t border-white/50 bg-[#09090B] px-3 py-2 pr-[120px] text-sm  placeholder:text-white/40 text-white focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="typing...." />
+            <button class="btn-send absolute right-0 bottom-0 h-[47px] !rounded-none	">
+              <div class="svg-wrapper-1">
+                <div class="svg-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path fill="currentColor"
+                      d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                    </path>
+                  </svg>
+                </div>
+              </div>
+              <span class="text-base">Send</span>
+            </button>
+          </div>
+
+          <!-- <button id="toggle-btn">Disconnect</button> -->
+
+        </form>
+        <ul id="messages"
+          class="h-[70vh] min-h-[350px] overflow-auto list-none m-0 pb-20 [&>li]:px-2 [&>li]:py-2 [&>li]:m-0 [&>li]:border-b [&>li]:border-solid [&>li]:border-[#171730] [&>li]:text-white [&>li]:pr-10 relative">
+        </ul>
+        <div class="scroll-down-dude absolute bottom-20 right-3 cursor-pointer hidden"></div>
+
+
+        <span class="span-cst top"></span>
+        <span class="span-cst right"></span>
+        <span class="span-cst bottom"></span>
+        <span class="span-cst left"></span>
+      </div>
+
+    </div>
+    <div id="clear-message-modal" tabindex="-1"
+      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-[#101112]">
+          <button type="button"
+            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="clear-message-modal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+          <div class="p-4 md:p-5 text-center">
+            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this
+              messages?</h3>
+            <button id="clearButton" data-modal-hide="clear-message-modal" type="button"
+              class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+              Yes, I'm sure
+            </button>
+            <button data-modal-hide="clear-message-modal" type="button"
+              class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No,
+              cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- contact form -->
+    <div id="contact-modal" tabindex="-1" aria-hidden="true"
+      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-[#101112]">
+          <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Contact us
+            </h3>
+            <button type="button"
+              class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="contact-modal">
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-4 md:p-5">
+            <form action="https://api.web3forms.com/submit" method="POST" class="grid gap-2">
+              <input type="hidden" name="access_key" value="23c025dd-824a-4139-9d04-fff9b2960dd8">
+              <div>
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your name</label>
+                <input type="name" name="name" id="name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="" required />
+              </div>
+              <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                  email</label>
+                <input type="email" name="email" id="email"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="name@company.com" required />
+              </div>
+              <div>
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                  message</label>
+                <input type="message" name="message" id="message" placeholder="••••••••"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  required />
+              </div>
+              <button type="submit"
+                class="mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <script>
+    // setTimeout(() => {
+    //   document.querySelector('.protected-div').classList.remove('hidden');
+    // }, 2000);
+    // const password = prompt('Enter the password:');
+    // if (password !== '106106') {
+    //   document.querySelector('.protected-div').style.display = 'none';
+    // }
+
+    const socket = io();
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const messages = document.getElementById('messages');
+    const clearButton = document.getElementById('clearButton');
+    const typingIndicator = document.querySelector('.user-typing');
+    const scrollDownButton = document.querySelector('.scroll-down-dude');
+
+    messages.addEventListener('scroll', () => {
+      const bottomScrollPosition = messages.scrollHeight - messages.clientHeight;
+      if (bottomScrollPosition - messages.scrollTop <= 250) {
+        scrollDownButton.style.display = 'none';
+      } else {
+        scrollDownButton.style.display = 'block';
+      }
+    });
+
+
+    setTimeout(() => {
+      messages.scrollTop = messages.scrollHeight;
+    }, 500);
+
+
+    window.addEventListener('load', () => {
+      const storedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+      storedMessages.forEach(msg => {
+        const item = document.createElement('li');
+        item.textContent = msg;
+        messages.appendChild(item);
+      });
+    });
+
+    $(document).ready(function () {
+    });
+
+    $(".scroll-down-dude").click(function () {
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input.value.trim() !== '') {
+        socket.emit('chat message', input.value.trim());
+        input.value = '';
+      }
+    });
+
+    socket.on('chat message', (msg) => {
+      const item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+      messages.scrollTop = messages.scrollHeight;
+      // Save chat messages to local storage
+      const storedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+      storedMessages.push(msg);
+      localStorage.setItem('chatMessages', JSON.stringify(storedMessages));
+      typingIndicator.textContent = '';
+
+    });
+
+    clearButton.addEventListener('click', () => {
+      messages.innerHTML = '';
+      localStorage.removeItem('chatMessages');
+    });
+
+    // let typingTimer;
+    // function handleUserTyping() {
+    //   clearTimeout(typingTimer);
+    //   typingIndicator.textContent = 'typing...';
+
+    //   typingTimer = setTimeout(() => {
+    //     typingIndicator.textContent = '';
+    //   }, 500);
+    // }
+    // input.addEventListener('input', handleUserTyping);
+
+    let typingTimer;
+    function handleUserTyping() {
+      clearTimeout(typingTimer);
+      socket.emit('typing'); // Emit 'typing' event when user starts typing
+      typingIndicator.textContent = 'typing...';
+
+      typingTimer = setTimeout(() => {
+        typingIndicator.textContent = '';
+        socket.emit('stoppedTyping'); // Emit 'stoppedTyping' event when user stops typing
+      }, 500);
+    }
+    input.addEventListener('input', handleUserTyping);
+
+    // Listen for 'typing' event from server
+    socket.on('typing', () => {
+      typingIndicator.textContent = 'typing...';
+    });
+
+    // Listen for 'stoppedTyping' event from server
+    socket.on('stoppedTyping', () => {
+      typingIndicator.textContent = '';
+    });
+
+
+    // input.addEventListener('input', () => {
+    //   typingIndicator.textContent = 'typing...';
+    //   setTimeout(() => {
+    //     typingIndicator.textContent = '';
+    //   }, 1000);
+    // });
+
+
+    // disconnet from server button js
+    // const toggleButton = document.getElementById('toggle-btn');
+
+    // toggleButton.addEventListener('click', (e) => {
+    //   e.preventDefault();
+    //   if (socket.connected) {
+    //     toggleButton.innerText = 'Connect';
+    //     socket.disconnect();
+    //   } else {
+    //     toggleButton.innerText = 'Disconnect';
+    //     socket.connect();
+    //   }
+    // });
+
+
+    // // Heade title
+    // function updateTitle(message) {
+    //   document.title = message !== '' ? `Typing... [${message}]` : 'Typing...'; // Update title with countdown or default message
+    // }
+    // function startInterval() {
+    //   let count = 1;
+    //   updateTitle(count);
+    //   let interval;
+    //   interval = setInterval(() => {
+    //     if (count <= 3) {
+    //       updateTitle(count++); // Update title with new count and then increment count
+    //     } else {
+    //       clearInterval(interval); // Stop the interval when count reaches 3
+    //     }
+    //   }, 2000); // Interval of 2 seconds (2000 milliseconds)
+    // }
+    // // Heade title
+
+
+
+  </script>
 </body>
 
 </html>
